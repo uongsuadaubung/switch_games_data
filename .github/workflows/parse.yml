@@ -26,14 +26,11 @@ jobs:
       - name: Install dependencies
         run: pip install Pillow
 
-      - name: Parse ZIP → games.json + version.json
+      - name: Parse ZIP → games.json
         run: python scripts/parse_zip.py source/latest.zip
 
       - name: Show parse result
         run: |
-          echo "=== version.json ==="
-          cat data/version.json
-          echo ""
           echo "=== games.json (first 3 games) ==="
           python -c "
           import json
@@ -58,8 +55,8 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           # Xoá ZIP khỏi Git index (file đã bị xoá bởi parse_zip.py)
           git rm --cached source/latest.zip 2>/dev/null || true
-          git add data/games.json data/version.json images/
+          git add data/games.json images/
           # Chỉ commit nếu có thay đổi thực sự
           git diff --cached --quiet && echo "No changes to commit" || \
-            git commit -m "🎮 Update games data — $(python -c "import json; d=json.load(open('data/version.json')); print(f\"{d['game_count']} games @ {d['timestamp']}\")")"
+            git commit -m "🎮 Update games data — $(python -c "import json; from datetime import datetime, timezone; games = json.load(open('data/games.json', encoding='utf-8')); print(f\"{len(games)} games @ {datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M:%S UTC')}\")")"
           git push

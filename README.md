@@ -11,8 +11,7 @@ switch-games-data/
 ├── source/
 │   └── latest.zip          ← Admin push file ZIP HTML vào đây
 ├── data/
-│   ├── games.json          ← Tự động tạo bởi GitHub Actions
-│   └── version.json        ← { hash, timestamp, game_count }
+│   └── games.json          ← Tự động tạo bởi GitHub Actions
 ├── images/
 │   └── *.jpg               ← Ảnh game, tự động tải bởi GitHub Actions
 ├── scripts/
@@ -26,10 +25,10 @@ switch-games-data/
 
 Khi admin push `source/latest.zip`:
 
-1. **Parse ZIP** → trích xuất toàn bộ game → ghi `data/games.json` + `data/version.json`
+1. **Parse ZIP** → trích xuất toàn bộ game → ghi `data/games.json`
 2. **Xoá ZIP** → file ZIP bị xoá sau khi parse xong để giữ repo gọn nhẹ
 3. **Download ảnh** → tải ảnh từ URL gốc, convert sang JPG → lưu vào `images/`
-4. **Commit & push** → bot commit `games.json`, `version.json`, ảnh mới về repo
+4. **Commit & push** → bot commit `games.json`, ảnh mới về repo
 
 > Toàn bộ quá trình mất khoảng 1–2 phút tuỳ số lượng ảnh mới.
 
@@ -49,9 +48,6 @@ git push
 ```
 # Danh sách game đầy đủ (kèm image_url, links tải, ...)
 https://raw.githubusercontent.com/uongsuadaubung/switch-games-data/main/data/games.json
-
-# Thông tin phiên bản (dùng để check có cập nhật không)
-https://raw.githubusercontent.com/uongsuadaubung/switch-games-data/main/data/version.json
 
 # Ảnh game
 https://raw.githubusercontent.com/uongsuadaubung/switch-games-data/main/images/{game_id}.jpg
