@@ -3,7 +3,7 @@ name: Parse ZIP → games.json + Download Images
 on:
   push:
     paths:
-      - 'source/latest.zip'   # Trigger khi push file ZIP mới
+      - 'source/*.zip'   # Trigger khi push file ZIP bất kỳ
   workflow_dispatch:           # Cho phép chạy thủ công từ GitHub UI
 
 jobs:
@@ -27,7 +27,13 @@ jobs:
         run: pip install Pillow
 
       - name: Parse ZIP → games.json
-        run: python scripts/parse_zip.py source/latest.zip
+        run: |
+          for zip_file in source/*.zip; do
+            if [ -f "$zip_file" ]; then
+              echo "Processing $zip_file..."
+              python scripts/parse_zip.py "$zip_file"
+            fi
+          done
 
       - name: Show parse result
         run: |
@@ -54,7 +60,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           # Xoá ZIP khỏi Git index (file đã bị xoá bởi parse_zip.py)
-          git rm --cached source/latest.zip 2>/dev/null || true
+          git rm --cached source/*.zip 2>/dev/null || true
           git add data/games.json images/
           # Chỉ commit nếu có thay đổi thực sự
           git diff --cached --quiet && echo "No changes to commit" || \

@@ -9,7 +9,7 @@ Repo dữ liệu tập trung cho [Switch Games Manager](https://github.com/uongs
 ```
 switch-games-data/
 ├── source/
-│   └── latest.zip          ← Admin push file ZIP HTML vào đây
+│   └── *.zip               ← Admin push file ZIP HTML bất kỳ vào đây
 ├── data/
 │   └── games.json          ← Tự động tạo bởi GitHub Actions
 ├── images/
@@ -23,7 +23,7 @@ switch-games-data/
 
 ## Luồng hoạt động (GitHub Actions)
 
-Khi admin push `source/latest.zip`:
+Khi admin push file ZIP bất kỳ vào thư mục `source/` (ví dụ `source/latest.zip` hoặc `source/data.zip`):
 
 1. **Parse ZIP** → trích xuất toàn bộ game → ghi `data/games.json`
 2. **Xoá ZIP** → file ZIP bị xoá sau khi parse xong để giữ repo gọn nhẹ
@@ -35,9 +35,9 @@ Khi admin push `source/latest.zip`:
 ## Cập nhật dữ liệu (Admin)
 
 ```bash
-# Chỉ cần copy ZIP vào thư mục source/ và push
-cp /path/to/new_data.zip source/latest.zip
-git add source/latest.zip
+# Chỉ cần copy file ZIP bất kỳ vào thư mục source/ và push
+cp /path/to/new_data.zip source/my_data.zip
+git add source/my_data.zip
 git commit -m "Update data"
 git push
 # → GitHub Action tự chạy, parse, tải ảnh, commit lại trong ~1-2 phút
@@ -59,10 +59,10 @@ https://raw.githubusercontent.com/uongsuadaubung/switch-games-data/main/images/{
 pip install Pillow
 
 # Parse ZIP → games.json (ZIP sẽ bị xoá sau khi xong)
-python scripts/parse_zip.py source/latest.zip
+python scripts/parse_zip.py source/my_data.zip
 
 # Giữ lại ZIP sau khi parse
-python scripts/parse_zip.py source/latest.zip --keep-zip
+python scripts/parse_zip.py source/my_data.zip --keep-zip
 
 # Tải ảnh → images/
 python scripts/download_images.py
